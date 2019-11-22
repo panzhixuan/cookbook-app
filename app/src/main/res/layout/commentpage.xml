@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:background="@drawable/background"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:id="@+id/commentpage">
+
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请输入评论："
+            android:layout_marginStart="15dp"
+            android:textSize="20dp"
+            android:layout_marginBottom="15dp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="20dp"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="评论将对所有人可见"
+            android:gravity="top"
+            android:includeFontPadding="false"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="15dp"
+            android:background="#ffffff"
+            android:layout_marginBottom="20dp"
+            android:textSize="14sp"
+            android:id="@+id/cookbook_comment"/>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发表评论"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/caixi_shape"
+            android:textColor="#ffffff"
+            android:id="@+id/cookbook_submit"/>
+
+
+</LinearLayout>

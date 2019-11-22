@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.cookbook">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <application
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:networkSecurityConfig="@xml/network_security_config"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity android:name=".main.PhotosearchActivity">
+        </activity>
+        <activity android:name=".main.PhotopageActivity">
+        </activity>
+
+        <uses-library
+                android:name="org.apache.http.legacy"
+                android:required="false"/>
+
+        <activity android:name=".LoginActivity.LogginpageActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".LoginActivity.RegisterpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".LoginActivity.ForgetpasswordpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".LoginActivity.MainpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".user.MycookbookActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".user.CreatecookbookpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".user.EditcookbookpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".user.CookbookdetailpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".user.CommentpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".user.BrowserpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".user.CollectpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".type.TypesearchpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".main.TypepageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+                android:name=".main.SearchpageActivity"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="${applicationId}.provider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_provider_paths"/>
+        </provider>
+    </application>
+
+</manifest>

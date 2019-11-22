@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF9800</color>
+    <color name="transparent70">#B3ffffff</color>
+    <color name="transparent30">#4Dffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="nav_gray">#AAAAAA</color>
+    <color name="orange">#FF9800</color>
+    <color name="red">#ef3b3b</color>
+    <color name="green">#7be413</color>
+    <color name="halfOrigin">#e2e231</color>
+</resources>
