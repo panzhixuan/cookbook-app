@@ -396,7 +396,7 @@
                         android:id="@+id/recdish1"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="150dp"
+                        android:layout_height="180dp"
                         android:orientation="vertical">
                     <ImageView
                             android:id="@+id/recdish1cover"
@@ -432,12 +432,30 @@
                                 android:textSize="13dp"
                                 android:textColor="@android:color/black"/>
                     </LinearLayout>
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="16dp">
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="推荐分："
+                                android:textSize="13dp"
+                                android:textColor="@android:color/black" />
+                        <TextView
+                                android:id="@+id/rating1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="13dp"
+                                android:textColor="@android:color/black"/>
+                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                         android:id="@+id/recdish2"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="150dp"
+                        android:layout_height="180dp"
                         android:orientation="vertical">
                     <ImageView
                             android:id="@+id/recdish2cover"
@@ -473,6 +491,24 @@
                                 android:textSize="13dp"
                                 android:textColor="@android:color/black"/>
                     </LinearLayout>
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="16dp">
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="推荐分："
+                                android:textSize="13dp"
+                                android:textColor="@android:color/black" />
+                        <TextView
+                                android:id="@+id/rating2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="13dp"
+                                android:textColor="@android:color/black"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -484,7 +520,7 @@
                         android:id="@+id/recdish3"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="150dp"
+                        android:layout_height="180dp"
                         android:orientation="vertical">
                     <ImageView
                             android:id="@+id/recdish3cover"
@@ -520,12 +556,30 @@
                                 android:textSize="13dp"
                                 android:textColor="@android:color/black"/>
                     </LinearLayout>
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="16dp">
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="推荐分："
+                                android:textSize="13dp"
+                                android:textColor="@android:color/black" />
+                        <TextView
+                                android:id="@+id/rating3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="13dp"
+                                android:textColor="@android:color/black"/>
+                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                         android:id="@+id/recdish4"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="150dp"
+                        android:layout_height="180dp"
                         android:orientation="vertical">
                     <ImageView
                             android:id="@+id/recdish4cover"
@@ -556,6 +610,24 @@
                                 android:textColor="@android:color/black" />
                         <TextView
                                 android:id="@+id/recdish4username"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="13dp"
+                                android:textColor="@android:color/black"/>
+                    </LinearLayout>
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="16dp">
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="推荐分："
+                                android:textSize="13dp"
+                                android:textColor="@android:color/black" />
+                        <TextView
+                                android:id="@+id/rating4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="13dp"
