@@ -198,7 +198,7 @@ public class UserFragment extends Fragment {
                         editor.commit();
                         Intent intent=null;
                         intent=new Intent(mainpageActivity,LogginpageActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
                 });

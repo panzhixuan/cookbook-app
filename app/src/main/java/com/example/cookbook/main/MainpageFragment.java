@@ -24,6 +24,7 @@ import com.example.cookbook.util.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class MainpageFragment extends Fragment{
     private PagerAdapter viewPagerAdapter;
     private ViewPager viewPager;
     private String[] imagename;
-    private ImageView[] tips;
+    private ImageView[] tips = new ImageView[3];
     private boolean isRunning = true;
     private Handler handler = new Handler() {
         @Override
@@ -70,6 +71,7 @@ public class MainpageFragment extends Fragment{
     private int currentItem;
     private static int status=1;
     private List<Cookbook> cookbookList = new ArrayList<Cookbook>();
+    private List<CookbookInfo> cookbookInfoList = new ArrayList<CookbookInfo>();
     private List<String> mStrings = new ArrayList<String>();
     private Handler mHandler = new Handler() {
         @Override
@@ -82,34 +84,69 @@ public class MainpageFragment extends Fragment{
                     loadmainData();
                 case 2:
                     int n=cookbookList.size();
+                    if(cookbookInfoList.size() <4) {
+                        while (cookbookInfoList.size() < 4) {
+                            while (true) {
+                                Random random = new Random();
+                                int a = random.nextInt(n );
+                                Cookbook cookbook = cookbookList.get(a);
+                                boolean flag = false;
+                                for (int i = 0; i < cookbookInfoList.size(); i++) {
+                                    if (cookbookInfoList.get(i).getCookbook().getCookbookId() == cookbook.getCookbookId()) {
+                                        flag = true;
+                                        break;
+                                    }
+                                }
+                                if(!flag) {
+                                    CookbookInfo cookbookInfo = new CookbookInfo();
+                                    cookbookInfo.setCookbook(cookbook);
+                                    cookbookInfo.setScore(0);
+                                    cookbookInfoList.add(cookbookInfo);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else if(cookbookInfoList.size() >= 4){
+                        cookbookInfoList.remove(cookbookInfoList.size() - 1);
+                        while (true) {
+                            Random random = new Random();
+                            int a = random.nextInt(n);
+                            Cookbook cookbook = cookbookList.get(a);
+                            boolean flag = false;
+                            for (int i = 0; i < cookbookInfoList.size(); i++) {
+                                if (cookbookInfoList.get(i).getCookbook().getCookbookId() == cookbook.getCookbookId()) {
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                            if(!flag) {
+                                CookbookInfo cookbookInfo = new CookbookInfo();
+                                cookbookInfo.setCookbook(cookbook);
+                                cookbookInfo.setScore(0);
+                                cookbookInfoList.add(cookbookInfo);
+                                break;
+                            }
+                        }
+                    }
+                    Collections.shuffle(cookbookInfoList);
                     ImageView cover1=(ImageView)view.findViewById(R.id.recdish1cover);
                     TextView dishname1=(TextView)view.findViewById(R.id.recdish1name);
                     TextView username1=(TextView)view.findViewById(R.id.recdish1username);
+                    TextView rating1 = (TextView)view.findViewById(R.id.rating1);
                     ImageView cover2=(ImageView)view.findViewById(R.id.recdish2cover);
                     TextView dishname2=(TextView)view.findViewById(R.id.recdish2name);
                     TextView username2=(TextView)view.findViewById(R.id.recdish2username);
+                    TextView rating2 = (TextView)view.findViewById(R.id.rating2);
                     ImageView cover3=(ImageView)view.findViewById(R.id.recdish3cover);
                     TextView dishname3=(TextView)view.findViewById(R.id.recdish3name);
                     TextView username3=(TextView)view.findViewById(R.id.recdish3username);
+                    TextView rating3 = (TextView)view.findViewById(R.id.rating3);
                     ImageView cover4=(ImageView)view.findViewById(R.id.recdish4cover);
                     TextView dishname4=(TextView)view.findViewById(R.id.recdish4name);
                     TextView username4=(TextView)view.findViewById(R.id.recdish4username);
-                    Random random = new Random();
-
-                    int a1= random.nextInt(n-1)%(n) + 1;
-                    int a2= random.nextInt(n-1)%(n) + 1;
-                    while(a2 == a1){
-                        a2= random.nextInt(n-1)%(n) + 1;
-                    }
-                    int a3= random.nextInt(n-1)%(n) + 1;
-                    while(a3==a1||a3==a2){
-                        a3= random.nextInt(n-1)%(n) + 1;
-                    }
-                    int a4= random.nextInt(n-1)%(n) + 1;
-                    while(a4==a1||a4==a2||a4==a3){
-                        a4= random.nextInt(n-1)%(n) + 1;
-                    }
-                    Getphoto getphoto =new Getphoto(cookbookList.get(a1).getCookbookPhoto());
+                    TextView rating4 = (TextView)view.findViewById(R.id.rating4);
+                    Getphoto getphoto =new Getphoto(cookbookInfoList.get(0).getCookbook().getCookbookPhoto());
                     getphoto.start();
                     try {
                         getphoto.join();
@@ -117,7 +154,7 @@ public class MainpageFragment extends Fragment{
                         e.printStackTrace();
                     }
                     cover1.setImageBitmap(getphoto.getBitmap());
-                    Getphoto getphoto1 =new Getphoto(cookbookList.get(a2).getCookbookPhoto());
+                    Getphoto getphoto1 =new Getphoto(cookbookInfoList.get(1).getCookbook().getCookbookPhoto());
                     getphoto1.start();
                     try {
                         getphoto1.join();
@@ -125,7 +162,7 @@ public class MainpageFragment extends Fragment{
                         e.printStackTrace();
                     }
                     cover2.setImageBitmap(getphoto1.getBitmap());
-                    Getphoto getphoto2 =new Getphoto(cookbookList.get(a3).getCookbookPhoto());
+                    Getphoto getphoto2 =new Getphoto(cookbookInfoList.get(2).getCookbook().getCookbookPhoto());
                     getphoto2.start();
                     try {
                         getphoto2.join();
@@ -133,7 +170,7 @@ public class MainpageFragment extends Fragment{
                         e.printStackTrace();
                     }
                     cover3.setImageBitmap(getphoto2.getBitmap());
-                    Getphoto getphoto3 =new Getphoto(cookbookList.get(a4).getCookbookPhoto());
+                    Getphoto getphoto3 =new Getphoto(cookbookInfoList.get(3).getCookbook().getCookbookPhoto());
                     getphoto3.start();
                     try {
                         getphoto3.join();
@@ -141,32 +178,32 @@ public class MainpageFragment extends Fragment{
                         e.printStackTrace();
                     }
                     cover4.setImageBitmap(getphoto3.getBitmap());
-                    dishname1.setText(cookbookList.get(a1).getCookbookName());
-                    dishname2.setText(cookbookList.get(a2).getCookbookName());
-                    dishname3.setText(cookbookList.get(a3).getCookbookName());
-                    dishname4.setText(cookbookList.get(a4).getCookbookName());
-                    Getuser getuser =new Getuser(cookbookList.get(a1).getUserId());
+                    dishname1.setText(cookbookInfoList.get(0).getCookbook().getCookbookName());
+                    dishname2.setText(cookbookInfoList.get(1).getCookbook().getCookbookName());
+                    dishname3.setText(cookbookInfoList.get(2).getCookbook().getCookbookName());
+                    dishname4.setText(cookbookInfoList.get(3).getCookbook().getCookbookName());
+                    Getuser getuser =new Getuser(cookbookInfoList.get(0).getCookbook().getUserId());
                     getuser.start();
                     try {
                         getuser.join();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    Getuser getuser1 =new Getuser(cookbookList.get(a2).getUserId());
+                    Getuser getuser1 =new Getuser(cookbookInfoList.get(1).getCookbook().getUserId());
                     getuser1.start();
                     try {
                         getuser1.join();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    Getuser getuser2 =new Getuser(cookbookList.get(a3).getUserId());
+                    Getuser getuser2 =new Getuser(cookbookInfoList.get(2).getCookbook().getUserId());
                     getuser2.start();
                     try {
                         getuser2.join();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    Getuser getuser3 =new Getuser(cookbookList.get(a4).getUserId());
+                    Getuser getuser3 =new Getuser(cookbookInfoList.get(3).getCookbook().getUserId());
                     getuser3.start();
                     try {
                         getuser3.join();
@@ -177,15 +214,15 @@ public class MainpageFragment extends Fragment{
                     username2.setText(getuser1.getUserName());
                     username3.setText(getuser2.getUserName());
                     username4.setText(getuser3.getUserName());
-                    final int b1=a1;
-                    final int b2=a2;
-                    final int b3=a3;
-                    final int b4=a4;
+                    rating1.setText(String.valueOf(cookbookInfoList.get(0).getScore()));
+                    rating2.setText(String.valueOf(cookbookInfoList.get(1).getScore()));
+                    rating3.setText(String.valueOf(cookbookInfoList.get(2).getScore()));
+                    rating4.setText(String.valueOf(cookbookInfoList.get(3).getScore()));
                     view.findViewById(R.id.recdish1).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Intent intent=new Intent(mainpageActivity,CookbookdetailpageActivity.class);
-                            intent.putExtra("cookbookPhoto",cookbookList.get(b1).getCookbookPhoto());
+                            intent.putExtra("cookbookPhoto",cookbookInfoList.get(0).getCookbook().getCookbookPhoto());
                             startActivity(intent);
                         }
                     });
@@ -193,7 +230,7 @@ public class MainpageFragment extends Fragment{
                         @Override
                         public void onClick(View view) {
                             Intent intent=new Intent(mainpageActivity,CookbookdetailpageActivity.class);
-                            intent.putExtra("cookbookPhoto",cookbookList.get(b2).getCookbookPhoto());
+                            intent.putExtra("cookbookPhoto",cookbookInfoList.get(1).getCookbook().getCookbookPhoto());
                             startActivity(intent);
                         }
                     });
@@ -201,7 +238,7 @@ public class MainpageFragment extends Fragment{
                         @Override
                         public void onClick(View view) {
                             Intent intent=new Intent(mainpageActivity,CookbookdetailpageActivity.class);
-                            intent.putExtra("cookbookPhoto",cookbookList.get(b3).getCookbookPhoto());
+                            intent.putExtra("cookbookPhoto",cookbookInfoList.get(2).getCookbook().getCookbookPhoto());
                             startActivity(intent);
                         }
                     });
@@ -209,7 +246,7 @@ public class MainpageFragment extends Fragment{
                         @Override
                         public void onClick(View view) {
                             Intent intent=new Intent(mainpageActivity, CookbookdetailpageActivity.class);
-                            intent.putExtra("cookbookPhoto",cookbookList.get(b4).getCookbookPhoto());
+                            intent.putExtra("cookbookPhoto",cookbookInfoList.get(3).getCookbook().getCookbookPhoto());
                             startActivity(intent);
                         }
                     });
@@ -660,6 +697,13 @@ public class MainpageFragment extends Fragment{
         }
     }
     private void loadmainData() {
+        GetRecommandCookbook getRecommandCookbook =new GetRecommandCookbook();
+        getRecommandCookbook.start();
+        try {
+            getRecommandCookbook.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         GetCookbook getCookbook =new GetCookbook();
         getCookbook.start();
         try {
@@ -706,6 +750,84 @@ public class MainpageFragment extends Fragment{
             }
         }
     }
+
+    public class GetRecommandCookbook extends Thread{
+        @Override
+        public void run(){
+            try {
+                params = new HashMap<>();
+                params.put("userId", User.getInstance().getUserId());
+                String res = RequestUtils.post("/cookbook/recommand", params);
+                try {
+                    JSONObject jsonObject1 = new JSONObject(res);
+                    if (jsonObject1.getInt("code") == 200) {
+                        JSONArray list = (JSONArray) jsonObject1.get("data");
+                        cookbookInfoList.clear();
+                        for(int i=0;i<list.length();i++){
+                            GetCookbookById getCookbookById = new GetCookbookById(list.getJSONObject(i).getInt("cookBookId"), (int)list.getJSONObject(i).getDouble("recommandScore"));
+                            getCookbookById.start();
+                            try {
+                                getCookbookById.join();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    } else {
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public class GetCookbookById extends Thread{
+        private int cookbookId;
+        private int score;
+        GetCookbookById(int cookbookId, int score){
+            this.cookbookId = cookbookId;
+            this.score = score;
+        }
+        @Override
+        public void run(){
+            try {
+                params = new HashMap<>();
+                params.put("cookbookId", cookbookId);
+                String res = RequestUtils.post("/cookbook/findbycookbookId", params);
+                try {
+                    JSONObject jsonObject1 = new JSONObject(res);
+                    if (jsonObject1.getInt("code") == 200) {
+                        Cookbook cookbook = new Cookbook();
+                        cookbook.setCookbookCuisine(jsonObject1.getInt("cookbookCuisine"));
+                        cookbook.setCookbookId(jsonObject1.getInt("cookbookId"));
+                        cookbook.setCookbookLikenum(jsonObject1.getInt("cookbookLikenum"));
+                        cookbook.setCookbookName(jsonObject1.getString("cookbookName"));
+                        cookbook.setCookbookNutrition(jsonObject1.getString("cookbookNutrition"));
+                        cookbook.setCookbookOccasion(jsonObject1.getInt("cookbookOccasion"));
+                        cookbook.setCookbookPhoto(jsonObject1.getString("cookbookPhoto"));
+                        cookbook.setCookbookTaste(jsonObject1.getInt("cookbookTaste"));
+                        cookbook.setCookbookTip(jsonObject1.getString("cookbookTip"));
+                        cookbook.setCookbookVisitnum(jsonObject1.getInt("cookbookVisitnum"));
+                        cookbook.setUserId(jsonObject1.getInt("userId"));
+                        CookbookInfo cookbookInfo = new CookbookInfo();
+                        cookbookInfo.setCookbook(cookbook);
+                        cookbookInfo.setScore(score);
+                        cookbookInfoList.add(cookbookInfo);
+                    } else {
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public class Getphoto extends Thread{
         private String photoname;
         private Bitmap bitmap;
@@ -881,5 +1003,6 @@ public class MainpageFragment extends Fragment{
             pd.dismiss();
         }
     }
+
 }
 

@@ -2,11 +2,13 @@ package com.example.cookbook.user;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -54,6 +56,7 @@ public class CookbookdetailpageActivity extends Activity {
     private int cookbookOccasion;
     private boolean judge=false;
     private boolean judge2=false;
+    private int mRating = 0;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
@@ -88,6 +91,16 @@ public class CookbookdetailpageActivity extends Activity {
                 case 5:
                     Toast.makeText(CookbookdetailpageActivity.this,"删除评论成功",Toast.LENGTH_LONG).show();
                     judge2=false;
+                    break;
+                case 6:
+                    Toast.makeText(CookbookdetailpageActivity.this, "添加收藏成功,评分为："+mRating, Toast.LENGTH_SHORT).show();
+                    judge = false;
+                    favor.setText("取消收藏");
+                    break;
+                case 7:
+                    Toast.makeText(CookbookdetailpageActivity.this, "取消收藏成功", Toast.LENGTH_SHORT).show();
+                    judge = true;
+                    favor.setText("添加收藏");
                     break;
                 default:
                     break;
@@ -205,30 +218,7 @@ public class CookbookdetailpageActivity extends Activity {
         favor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(judge==true) {
-                    Addfavor addfavor= new Addfavor();
-                    addfavor.start();
-                    try {
-                        addfavor.join();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    judge=false;
-                    favor.setText("取消收藏");
-                    Toast.makeText(CookbookdetailpageActivity.this,"收藏成功",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Delfavor delfavor = new Delfavor();
-                    delfavor.start();
-                    try {
-                        delfavor.join();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    judge=true;
-                    favor.setText("添加收藏");
-                    Toast.makeText(CookbookdetailpageActivity.this,"取消收藏成功",Toast.LENGTH_LONG).show();
-                }
+                showRatingDialog();
             }
         });
         publish.setOnClickListener(new View.OnClickListener() {
@@ -313,7 +303,7 @@ public class CookbookdetailpageActivity extends Activity {
         public void run(){
             try {
                 params = new HashMap<>();
-                params.put("userId", userId);
+                params.put("userId", User.getInstance().getUserId());
                 params.put("cookbookId", cookbookId);
                 String res1 = RequestUtils.post("/visit/get", params);
                 try {
@@ -347,7 +337,7 @@ public class CookbookdetailpageActivity extends Activity {
         public void run(){
             try {
                 params = new HashMap<>();
-                params.put("userId", userId);
+                params.put("userId", User.getInstance().getUserId());
                 params.put("cookbookId", cookbookId);
                 String res1 = RequestUtils.post("/likes/get", params);
                 try {
@@ -363,6 +353,7 @@ public class CookbookdetailpageActivity extends Activity {
                     else {
                         mHandler.sendEmptyMessage(0);
                     }
+                    Log.d("TEST000", "judge"+judge);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -377,14 +368,20 @@ public class CookbookdetailpageActivity extends Activity {
         public void run(){
             try {
                 params = new HashMap<>();
-                params.put("userId", userId);
+                params.put("userId", User.getInstance().getUserId());
                 params.put("cookbookId", cookbookId);
                 params.put("cookbookLikenum", cookbookLikenum);
                 String res1 = RequestUtils.post("/likes/add", params);
                 try {
                     JSONObject jsonObject1 = new JSONObject(res1);
                     if (jsonObject1.getInt("code") == 200) {
-
+                        AddScore addScore= new AddScore();
+                        addScore.start();
+                        try {
+                            addScore.join();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     else {
                         mHandler.sendEmptyMessage(0);
@@ -398,19 +395,53 @@ public class CookbookdetailpageActivity extends Activity {
             }
         }
     }
+
+    public class AddScore extends Thread{
+        @Override
+        public void run(){
+            try {
+                params = new HashMap<>();
+                params.put("userId", User.getInstance().getUserId());
+                params.put("cookbookId", cookbookId);
+                params.put("scoreNum", mRating);
+                String res1 = RequestUtils.post("/score/add", params);
+                try {
+                    JSONObject jsonObject1 = new JSONObject(res1);
+                    if (jsonObject1.getInt("code") == 200) {
+                        mHandler.sendEmptyMessage(6);
+                    }
+                    else {
+                        mHandler.sendEmptyMessage(0);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public class Delfavor extends Thread{
         @Override
         public void run(){
             try {
                 params = new HashMap<>();
-                params.put("userId", userId);
+                params.put("userId", User.getInstance().getUserId());
                 params.put("cookbookId", cookbookId);
                 params.put("cookbookLikenum", cookbookLikenum);
                 String res1 = RequestUtils.post("/likes/delete", params);
                 try {
                     JSONObject jsonObject1 = new JSONObject(res1);
                     if (jsonObject1.getInt("code") == 200) {
-
+                        DelScore delScore= new DelScore();
+                        delScore.start();
+                        try {
+                            delScore.join();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     else {
                         mHandler.sendEmptyMessage(0);
@@ -424,12 +455,39 @@ public class CookbookdetailpageActivity extends Activity {
             }
         }
     }
+
+    public class DelScore extends Thread{
+        @Override
+        public void run(){
+            try {
+                params = new HashMap<>();
+                params.put("userId", User.getInstance().getUserId());
+                params.put("cookbookId", cookbookId);
+                String res1 = RequestUtils.post("/score/delete", params);
+                try {
+                    JSONObject jsonObject1 = new JSONObject(res1);
+                    if (jsonObject1.getInt("code") == 200) {
+                        mHandler.sendEmptyMessage(7);
+                    }
+                    else {
+                        mHandler.sendEmptyMessage(0);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public class Addbrowser extends Thread{
         @Override
         public void run(){
             try {
                 params = new HashMap<>();
-                params.put("userId", userId);
+                params.put("userId", User.getInstance().getUserId());
                 params.put("cookbookId", cookbookId);
                 params.put("cookbookVisitnum", cookbookVisitnum);
                 String res1 = RequestUtils.post("/visit/add", params);
@@ -723,6 +781,63 @@ public class CookbookdetailpageActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showRatingDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if(judge) {
+            builder.setTitle("添加收藏，请选择评分");
+            final View v =  getLayoutInflater().inflate(R.layout.rating_dialog,null);
+            builder.setView(v);
+            RatingBar rb_normal = (RatingBar) v.findViewById(R.id.rating);
+            rb_normal.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    mRating = (int)rating;
+                    Toast.makeText(CookbookdetailpageActivity.this, "您选择的评分为:"+mRating, Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Addfavor addfavor= new Addfavor();
+                    addfavor.start();
+                    try {
+                        addfavor.join();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+        }
+        else{
+            builder.setTitle("取消收藏");
+            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Delfavor delfavor= new Delfavor();
+                    delfavor.start();
+                    try {
+                        delfavor.join();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+        }
+
+
+        builder.show();
     }
 
 //    private void addbrowse(String id,Integer num){
