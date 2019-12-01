@@ -199,7 +199,12 @@ public class PhotosearchActivity extends AppCompatActivity {
                     if (jsonObject1.getInt("code") == 200) {
                         JSONArray list = (JSONArray) jsonObject1.get("data");
                         if(list.length() != 0){
-                            hasMore = true;
+                            if(list.length() < 6) {
+                                hasMore = false;
+                            }
+                            else{
+                                hasMore = true;
+                            }
                             for(int i = 0 ; i < list.length(); i++){
                                 cookbookIdList.add(list.getInt(i));
                                 GetCookbook getCookbook =new GetCookbook(list.getInt(i));

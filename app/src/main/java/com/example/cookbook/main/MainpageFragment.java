@@ -21,6 +21,7 @@ import com.example.cookbook.user.CookbookdetailpageActivity;
 import com.example.cookbook.user.MycookbookActivity;
 import com.example.cookbook.user.MycookbooklistAdapter;
 import com.example.cookbook.util.*;
+import com.google.gson.JsonObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,6 +85,7 @@ public class MainpageFragment extends Fragment{
                     loadmainData();
                 case 2:
                     int n=cookbookList.size();
+                    Log.d("RECOMMED123", "xianzai:"+cookbookInfoList.size());
                     if(cookbookInfoList.size() <4) {
                         while (cookbookInfoList.size() < 4) {
                             while (true) {
@@ -108,7 +110,6 @@ public class MainpageFragment extends Fragment{
                         }
                     }
                     else if(cookbookInfoList.size() >= 4){
-                        cookbookInfoList.remove(cookbookInfoList.size() - 1);
                         while (true) {
                             Random random = new Random();
                             int a = random.nextInt(n);
@@ -798,8 +799,9 @@ public class MainpageFragment extends Fragment{
                 params.put("cookbookId", cookbookId);
                 String res = RequestUtils.post("/cookbook/findbycookbookId", params);
                 try {
-                    JSONObject jsonObject1 = new JSONObject(res);
-                    if (jsonObject1.getInt("code") == 200) {
+                    JSONObject jsonObject = new JSONObject(res);
+                    if (jsonObject.getInt("code") == 200) {
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                         Cookbook cookbook = new Cookbook();
                         cookbook.setCookbookCuisine(jsonObject1.getInt("cookbookCuisine"));
                         cookbook.setCookbookId(jsonObject1.getInt("cookbookId"));
@@ -816,6 +818,7 @@ public class MainpageFragment extends Fragment{
                         cookbookInfo.setCookbook(cookbook);
                         cookbookInfo.setScore(score);
                         cookbookInfoList.add(cookbookInfo);
+                        Log.d("RECOMMED", "xianzai:"+cookbookInfoList.size());
                     } else {
                     }
                 } catch (JSONException e) {

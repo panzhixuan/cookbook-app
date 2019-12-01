@@ -177,8 +177,13 @@ public class BrowserpageActivity extends Activity {
                     JSONObject jsonObject1 = new JSONObject(res);
                     if (jsonObject1.getInt("code") == 200) {
                         JSONArray list = (JSONArray) jsonObject1.get("data");
-                        if(list.length() != 0) {
-                            hasMore = true;
+                        if(list.length() != 0 || list == null) {
+                            if(list.length() < 6) {
+                                hasMore = false;
+                            }
+                            else{
+                                hasMore = true;
+                            }
                             for (int i = 0; i < list.length(); i++) {
                                 params = new HashMap<>();
                                 params.put("cookbookId", list.getJSONObject(i).getInt("cookbookId"));

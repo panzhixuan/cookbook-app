@@ -163,7 +163,12 @@ public class SearchpageActivity extends Activity {
                     if (jsonObject1.getInt("code") == 200) {
                         JSONArray list = (JSONArray) jsonObject1.get("data");
                         if(list.length() != 0){
-                            hasMore = true;
+                            if(list.length() < 6) {
+                                hasMore = false;
+                            }
+                            else{
+                                hasMore = true;
+                            }
                             for (int i = 0; i < list.length(); i++) {
                                 Cookbook cookbook=new Cookbook();
                                 cookbook.setCookbookCuisine(list.getJSONObject(i).getInt("cookbookCuisine"));
